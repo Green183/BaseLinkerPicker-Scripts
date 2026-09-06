@@ -1,0 +1,53 @@
+{
+  "channel": "stable",
+  "scripts": [
+    {
+      "id": "wms",
+      "name": "Ukrywanie przycisków WMS",
+      "version": "1.15",
+      "file": "wms.js"
+    },
+    {
+      "id": "animations",
+      "name": "Usuwanie animacji",
+      "version": "1.2",
+      "file": "animations.js"
+    },
+    {
+      "id": "hideBottom",
+      "name": "Ukrywanie dolnych przycisków",
+      "version": "1.75",
+      "file": "hide-bottom.js"
+    },
+    {
+      "id": "hideTop",
+      "name": "Ukrywanie górnych przycisków",
+      "version": "1.05",
+      "file": "hide-top.js"
+    },
+    {
+      "id": "productFormatting",
+      "name": "Formatowanie SKU i EAN",
+      "version": "1.0",
+      "file": "product-formatting.js"
+    },
+    {
+      "id": "locations",
+      "name": "Edycja lokalizacji",
+      "version": "1.0",
+      "file": "locations.js"
+    },
+    {
+      "id": "login",
+      "name": "Logowanie użytkowników",
+      "version": "1.0",
+      "file": "login.js"
+    },
+    {
+      "id": "errorReport",
+      "name": "Zgłaszanie problemów",
+      "version": "1.0",
+      "file": "error-report.js"
+    }
+  ]
+}
