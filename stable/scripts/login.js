@@ -7,7 +7,23 @@
         'Ania'
     ];
 
+    /*
+     * Po wybraniu użytkownika ustawiamy tę flagę.
+     * MutationObserver nie będzie wtedy ponownie
+     * tworzył kafelków podczas logowania.
+     */
+    let loginInProgress = false;
+
+
     function createUserSelector() {
+
+        /*
+         * Jeżeli użytkownik został już wybrany,
+         * nie pokazujemy ponownie kafelków.
+         */
+        if (loginInProgress) {
+            return;
+        }
 
         const mainWrapper =
             document.querySelector('.main-wrapper');
@@ -80,6 +96,30 @@
                             typeof window.AndroidLogin.loginUser === 'function'
                         ) {
 
+                            /*
+                             * WAŻNE:
+                             *
+                             * Najpierw blokujemy ponowne
+                             * tworzenie selektora.
+                             */
+                            loginInProgress = true;
+
+                            /*
+                             * Potem usuwamy kafelki.
+                             */
+                            const selector =
+                                document.querySelector(
+                                    '#base-user-selector'
+                                );
+
+                            if (selector) {
+                                selector.remove();
+                            }
+
+                            /*
+                             * Dopiero teraz przekazujemy
+                             * użytkownika do Androida.
+                             */
                             window.AndroidLogin.loginUser(
                                 userName
                             );
@@ -211,7 +251,12 @@
             new MutationObserver(
                 function () {
 
-                    createUserSelector();
+                    /*
+                     * Podczas logowania NIE odtwarzamy kafelków.
+                     */
+                    if (!loginInProgress) {
+                        createUserSelector();
+                    }
                 }
             );
 
