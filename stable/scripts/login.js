@@ -7,28 +7,13 @@
         'Ania'
     ];
 
-    /*
-     * Po wybraniu użytkownika ustawiamy tę flagę.
-     * MutationObserver nie będzie wtedy ponownie
-     * tworzył kafelków podczas logowania.
-     */
-    let loginInProgress = false;
-
-
     function createUserSelector() {
-
-        /*
-         * Jeżeli użytkownik został już wybrany,
-         * nie pokazujemy ponownie kafelków.
-         */
-        if (loginInProgress) {
-            return;
-        }
 
         const mainWrapper =
             document.querySelector('.main-wrapper');
 
         if (!mainWrapper) {
+            console.log('Nie znaleziono .main-wrapper');
             return;
         }
 
@@ -69,14 +54,10 @@
             </div>
         `;
 
-        document.body.appendChild(
-            selector
-        );
+        document.body.appendChild(selector);
 
         document
-            .querySelectorAll(
-                '.user-tile'
-            )
+            .querySelectorAll('.user-tile')
             .forEach(button => {
 
                 button.addEventListener(
@@ -91,35 +72,25 @@
                         const userName =
                             USERS[index];
 
+                        /*
+                         * Najpierw usuwamy ekran wyboru.
+                         * I WAŻNE:
+                         * nic później go już nie tworzy ponownie.
+                         */
+                        const selector =
+                            document.querySelector(
+                                '#base-user-selector'
+                            );
+
+                        if (selector) {
+                            selector.remove();
+                        }
+
                         if (
                             window.AndroidLogin &&
                             typeof window.AndroidLogin.loginUser === 'function'
                         ) {
 
-                            /*
-                             * WAŻNE:
-                             *
-                             * Najpierw blokujemy ponowne
-                             * tworzenie selektora.
-                             */
-                            loginInProgress = true;
-
-                            /*
-                             * Potem usuwamy kafelki.
-                             */
-                            const selector =
-                                document.querySelector(
-                                    '#base-user-selector'
-                                );
-
-                            if (selector) {
-                                selector.remove();
-                            }
-
-                            /*
-                             * Dopiero teraz przekazujemy
-                             * użytkownika do Androida.
-                             */
                             window.AndroidLogin.loginUser(
                                 userName
                             );
@@ -231,46 +202,23 @@
             }
         `;
 
-        (
-            document.head ||
-            document.documentElement
-        ).appendChild(
-            style
-        );
+        document.head.appendChild(style);
     }
 
 
-    function start() {
+    /*
+     * Tak jak w oryginalnym Tampermonkey.
+     * Bez MutationObserver.
+     */
+    setTimeout(
+        function () {
 
-        addStyles();
+            addStyles();
 
-        createUserSelector();
+            createUserSelector();
 
-
-        const observer =
-            new MutationObserver(
-                function () {
-
-                    /*
-                     * Podczas logowania NIE odtwarzamy kafelków.
-                     */
-                    if (!loginInProgress) {
-                        createUserSelector();
-                    }
-                }
-            );
-
-
-        observer.observe(
-            document.documentElement,
-            {
-                childList: true,
-                subtree: true
-            }
-        );
-    }
-
-
-    start();
+        },
+        800
+    );
 
 })();

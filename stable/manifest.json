@@ -40,7 +40,7 @@
     {
       "id": "login",
       "name": "Logowanie użytkowników",
-      "version": "1.1",
+      "version": "1.2",
       "file": "login.js"
     },
     {
